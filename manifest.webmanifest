@@ -1,5 +1,6 @@
-{"name":"Text","short_name":"Text","description":"Fast offline text editor for huge files","start_url":"./","scope":"./","id":"./","display":"standalone","background_color":"#1b1b1b","theme_color":"#1b1b1b",
+{"name":"Text","short_name":"Text","description":"Fast offline text editor for huge files","start_url":"./","scope":"./","id":"./","display":"standalone","display_override":["window-controls-overlay","standalone"],"background_color":"#1b1b1b","theme_color":"#1b1b1b","categories":["productivity","utilities"],
 "icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}],
+"shortcuts":[{"name":"New file","url":"./?new=1","icons":[{"src":"icon-192.png","sizes":"192x192"}]}],
 "file_handlers":[{"action":"./","accept":{
 "text/plain":[".txt",".log",".text",".conf",".cfg",".ini",".env",".toml",".properties",".gitignore",".sh",".bash",".py",".rb",".c",".h",".cpp",".java",".go",".rs",".php",".sql",".ts",".tsx",".jsx",".lua",".bat"],
 "text/html":[".html",".htm",".xhtml"],"text/css":[".css",".scss",".less"],"text/javascript":[".js",".mjs",".cjs"],
