@@ -207,12 +207,16 @@ try{home=await showDirectoryPicker({id:'text',mode:'readwrite'});await idb('read
 $('#skip').onclick=()=>{localStorage.tgr=1;$('#ask').classList.remove('o');ta.focus()};
 addEventListener('pointerdown',async()=>{if(home&&await home.queryPermission({mode:'readwrite'})!='granted')try{await home.requestPermission({mode:'readwrite'})}catch{}},{once:true});
 // ---- boot: restore last session, then wire Chrome app integration
-let launched=0;metrics();navigator.storage?.persist?.();
+let pend=0,readyR;const ready=new Promise(r=>readyR=r);metrics();navigator.storage?.persist?.();
 if(!localStorage.tgr)$('#ask').classList.add('o');
-if('launchQueue'in window)launchQueue.setConsumer(async p=>{launched=1;for(const h of p.files)await openH(h)});
+function act(u){let a;try{a=new URL(u||location.href,location.href).searchParams.get('a')}catch{}
+if(a=='new')addTab('Untitled');else if(a=='wrap'){cfg.wrap^=1;cs();layout()}else if(a=='settings')$('#bset').click();else if(a=='find')openFind();
+else if(a=='open'){pend=openF;$('#ttl').textContent='Click or press a key to choose a file…'}}
+const runPend=()=>{if(pend){const f=pend;pend=0;tabsUI();f()}};addEventListener('pointerdown',runPend,true);addEventListener('keydown',runPend,true);
+if('launchQueue'in window)launchQueue.setConsumer(async p=>{await ready;for(const h of p.files)await openH(h);act(p.targetURL)});
 (async()=>{home=await idb('readonly','home')||null;const s=await idb('readonly','session');
 if(s&&s.hs)for(const h of s.hs){try{const g=await h.queryPermission({mode:'readwrite'})=='granted';addTab(h.name,h,g?await h.getFile():null,{quiet:1,stub:!g})}catch{}}
-if(!tabs.length)addTab('Untitled');else if(!launched)switchTo(tabs[Math.min(s.act||0,tabs.length-1)]);
+if(!tabs.length)addTab('Untitled');else switchTo(tabs[Math.min((s&&s.act)||0,tabs.length-1)]);readyR();if(!('launchQueue'in window))act();
 addEventListener('pointerdown',()=>{if(T&&T.stub)unstub(T)},{once:true})})();
 if('serviceWorker'in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js');navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!tabs.some(t=>t.dirty))location.reload()})}
 </script></body></html>
